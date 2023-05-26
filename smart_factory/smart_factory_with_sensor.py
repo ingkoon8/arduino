@@ -13,6 +13,55 @@ root = tk.Tk()
 # GUI의 크기를 지정합니다.
 root.geometry('700x500')
 
+def ps3(): # 센서3 인식 동작
+    ser.write(b"LAMP_RED=OFF\n")
+    button_lamp_red.configure(text='OFF',bg='red')
+    ser.write(b"LAMP_GREEN=ON\n")
+    button_lamp_red.configure(text='ON',bg='green')
+    sendData = f"CV_MOTOR={130}\n"
+    ser.write( sendData.encode() )
+
+def ps2(): # 센서2 인식 동작
+    ser.write(b"LAMP_YELLOW=ON\n")
+    button_lamp_red.configure(text='ON',bg='yellow')
+    ser.write(b"LAMP_GREEN=OFF\n")
+    button_lamp_red.configure(text='OFF',bg='green')
+    time.sleep(2)
+    ser.write(b"LAMP_RED=ON\n")
+    button_lamp_red.configure(text='ON',bg='red')
+    ser.write(b"LAMP_YELLOW=OFF\n")
+    button_lamp_red.configure(text='OFF',bg='yellow')
+    sendData = f"CV_MOTOR={0}\n"
+    ser.write( sendData.encode() )
+    time.sleep(3)
+    ser.write(b"LAMP_RED=OFF\n")
+    button_lamp_red.configure(text='OFF',bg='red')
+    ser.write(b"LAMP_GREEN=ON\n")
+    button_lamp_red.configure(text='ON',bg='green')
+    sendData = f"CV_MOTOR={130}\n"
+    ser.write( sendData.encode() )
+
+def ps1(): # 센서1 인식 동작
+    ser.write(b"LAMP_GREEN=OFF\n")
+    button_lamp_red.configure(text='OFF',bg='green')
+    ser.write(b"LAMP_YELLOW=ON\n")
+    button_lamp_red.configure(text='ON',bg='yellow')
+    time.sleep(2)
+    ser.write(b"LAMP_RED=ON\n")
+    button_lamp_red.configure(text='ON',bg='red')
+    ser.write(b"LAMP_YELLOW=OFF\n")
+    button_lamp_red.configure(text='OFF',bg='yellow')
+    sendData = f"CV_MOTOR={0}\n"
+    ser.write( sendData.encode() )
+    sendData = f"SERVO_1={130}\n"
+    ser.write( sendData.encode() )
+    time.sleep(1)
+    ser.write(b"CATCH=ON\n")
+    button_air_catch.configure(text='ON',bg='red')
+    time.sleep(3)
+    sendData = f"SERVO_1={80}\n"
+    ser.write( sendData.encode() )
+
 
 # ----------타워램프----------------
 # 초기값을 설정합니다.
@@ -228,25 +277,7 @@ def serial_read_thread():
             if "PS_1=ON" in serial_receive_data:
                 button_ps_1.configure(text='ON',bg='red')
                 print(serial_receive_data)
-                ser.write(b"LAMP_GREEN=OFF\n")
-                button_lamp_red.configure(text='OFF',bg='green')
-                ser.write(b"LAMP_YELLOW=ON\n")
-                button_lamp_red.configure(text='ON',bg='yellow')
-                time.sleep(2)
-                ser.write(b"LAMP_RED=ON\n")
-                button_lamp_red.configure(text='ON',bg='red')
-                ser.write(b"LAMP_YELLOW=OFF\n")
-                button_lamp_red.configure(text='OFF',bg='yellow')
-                sendData = f"CV_MOTOR={0}\n"
-                ser.write( sendData.encode() )
-                sendData = f"SERVO_1={130}\n"
-                ser.write( sendData.encode() )
-                time.sleep(1)
-                ser.write(b"CATCH=ON\n")
-                button_air_catch.configure(text='ON',bg='red')
-                time.sleep(3)
-                sendData = f"SERVO_1={80}\n"
-                ser.write( sendData.encode() )
+                ps1()
                 serial_receive_data =""
                 break
             elif "PS_1=OFF" in serial_receive_data:
@@ -256,24 +287,7 @@ def serial_read_thread():
             elif "PS_2=ON" in serial_receive_data:
                 button_ps_2.configure(text='ON',bg='red')
                 print(serial_receive_data)
-                ser.write(b"LAMP_YELLOW=ON\n")
-                button_lamp_red.configure(text='ON',bg='yellow')
-                ser.write(b"LAMP_GREEN=OFF\n")
-                button_lamp_red.configure(text='OFF',bg='green')
-                time.sleep(2)
-                ser.write(b"LAMP_RED=ON\n")
-                button_lamp_red.configure(text='ON',bg='red')
-                ser.write(b"LAMP_YELLOW=OFF\n")
-                button_lamp_red.configure(text='OFF',bg='yellow')
-                sendData = f"CV_MOTOR={0}\n"
-                ser.write( sendData.encode() )
-                time.sleep(3)
-                ser.write(b"LAMP_RED=OFF\n")
-                button_lamp_red.configure(text='OFF',bg='red')
-                ser.write(b"LAMP_GREEN=ON\n")
-                button_lamp_red.configure(text='ON',bg='green')
-                sendData = f"CV_MOTOR={130}\n"
-                ser.write( sendData.encode() )
+                ps2()
                 serial_receive_data =""
             elif "PS_2=OFF" in serial_receive_data:
                 button_ps_2.configure(text='OFF',bg='gray')
@@ -282,12 +296,7 @@ def serial_read_thread():
             elif "PS_3=ON" in serial_receive_data:
                 button_ps_3.configure(text='ON',bg='red')
                 print(serial_receive_data)
-                ser.write(b"LAMP_RED=OFF\n")
-                button_lamp_red.configure(text='OFF',bg='red')
-                ser.write(b"LAMP_GREEN=ON\n")
-                button_lamp_red.configure(text='ON',bg='green')
-                sendData = f"CV_MOTOR={130}\n"
-                ser.write( sendData.encode() )
+                ps3()
                 serial_receive_data =""
             elif "PS_3=OFF" in serial_receive_data:
                 button_ps_3.configure(text='OFF',bg='gray')
