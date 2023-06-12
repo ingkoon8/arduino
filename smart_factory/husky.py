@@ -1,11 +1,11 @@
 import serial
 
 # Serial port information
-port = 'COM17'  # Change it according to the port number
-baudrate = 9600  # set the same baud rate as Arduino code
+port = '/dev/cu.usbmodem1401'  # Change it according to the port number
+baudrate = 115200  # set the same baud rate as Arduino code
 
 # File path
-file_path = 'received_ids.txt'
+file_path = '/Users/yujaemin/Desktop/python/received_ids.txt'
 
 # Create serial communication object
 ser = serial.Serial(port, baudrate)
